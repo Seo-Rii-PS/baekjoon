@@ -6,16 +6,17 @@
 using namespace std;
 
 vector<int> pa, h;
-vector<vector<int>> v;
+vector<vector<int>> v, li;
 int n, m;
 
-int geth(int p) {
-    if (!pa[p]) {
-        h[p] = 1;
-        return 1;
+void make_tree(int p, int nh) {
+    h[p] = nh;
+    for (auto &i:li[p]) {
+        if (!h[i]) {
+            pa[i] = p;
+            make_tree(i, nh + 1);
+        }
     }
-    if (!h[p]) h[p] = geth(pa[p]) + 1;
-    return h[p];
 }
 
 int query(int a, int b) {
@@ -47,15 +48,17 @@ int main() {
     pa.resize(n + 1);
     h.resize(n + 1);
     v.resize(n + 1);
+    li.resize(n + 1);
     int a, b;
     for (int i = 1; i < n; ++i) {
         cin >> a >> b;
-        pa[b] = a;
+        li[a].emplace_back(b);
+        li[b].emplace_back(a);
     }
-    for (int i = 1; i <= n; ++i) geth(i);
+    make_tree(1, 1);
     for (int i = 1; i <= n; ++i) v[i].push_back(pa[i]);
     int n2 = 0, t = 1;
-    while (n2 < n) {
+    while (t < n) {
         ++n2;
         t <<= 1;
     }
