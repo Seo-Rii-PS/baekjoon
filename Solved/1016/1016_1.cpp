@@ -11,25 +11,15 @@ int main() {
     ios::sync_with_stdio(false);
     ll s, f;
     cin >> s >> f;
-    vector<ll> primes;
-    for (ll i = 2; i * i <= f; ++i) {
-        bool fl = false;
-        for (auto &j:primes)
-            if (i % j == 0) {
-                fl = true;
-                break;
-            }
-        if (!fl) primes.push_back(i);
-    }
     vector<bool> paint(f - s + 1);
-    for (auto &i:primes) {
+    for (ll i = 2; i * i <= f; ++i) {
         ll d = i * i;
         for (ll j = s / d * d; j <= f; j += d) {
             if (j >= s)paint[j - s] = true;
         }
     }
     ll cnt = 0;
-    for (bool i:paint) if (!i) ++cnt;
+    for (ll i = 0; i < paint.size(); ++i) if (!paint[i]) ++cnt;
     cout << cnt << endl;
     return 0;
 }
