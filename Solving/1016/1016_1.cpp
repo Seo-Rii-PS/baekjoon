@@ -1,26 +1,35 @@
-#include<stdio.h>
+//2021 SEORII®. All right reserved.
+//Code created on 2021-07-07
 
-int main()
-{
-    int i, j, i1, j1, n=1, bayal[500][500];
-    scanf("%d %d", &i1, &j1);
-    for(i=1;i<=i1;i++) {
-        if (i%2==1) {
-            for(j=1;j<=j1;j++) {
-                bayal[i][j]=n++;
+#include <bits/stdc++.h>
+
+using namespace std;
+using ll = long long;
+
+int main() {
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    ll s, f;
+    cin >> s >> f;
+    vector<ll> primes;
+    for (ll i = 2; i * i <= f; ++i) {
+        bool fl = false;
+        for (auto &j:primes)
+            if (i % j == 0) {
+                fl = true;
+                break;
             }
-        }
-        else {
-            for(j=j1;j>=1;j--) {
-                bayal[i][j]=n++;
-            }
+        if (!fl) primes.push_back(i);
+    }
+    vector<bool> paint(f - s + 1);
+    for (auto &i:primes) {
+        ll d = i * i;
+        for (ll j = s / d * d; j <= f; j += d) {
+            if (j >= s)paint[j - s] = true;
         }
     }
-    for(i=1;i<=i1;i++) {
-        for(j=1;j<=j1;j++) {
-            printf("%d ", bayal[i][j]);
-        }
-        printf("\n");
-    }
+    ll cnt = 0;
+    for (bool i:paint) if (!i) ++cnt;
+    cout << cnt << endl;
     return 0;
 }
